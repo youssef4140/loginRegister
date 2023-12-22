@@ -34,9 +34,11 @@ class AuthenticatedSessionController extends Controller
     {
 
 
-        $sessionTermination = $request->user()->currentAccessToken()->delete();
+        $token = $request->user()->currentAccessToken();
 
-        
+        if(!$token){return response()->json([false]);}
+
+        $sessionTermination = $token->delete();
         if ($sessionTermination){
             return response()->json([
                 "success"=>true,
