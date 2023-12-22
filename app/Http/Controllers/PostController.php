@@ -92,15 +92,53 @@ class PostController extends Controller
 
     public function delete($id): JsonResponse
     {
-        $User_id = Auth::user()->id;
+    try{
 
-        $post = Post::find($id)->where('user_id',$User_id);
+        $user_id = Auth::user()->id;
 
-        return $post;
+        $post = Post::find($id)->where(['user_id' => $user_id]);
+
+        if(!$post){
+            return response()->json(["message"=>"This post doesn't exist"],404);
+        }
+        $deletion = $post->forceDelete();
+        if($deletion){
+            return response()->json([
+                "message"=>"post with id = (".$id.") deleted successfully",
+                "id"=>$id,
+        ],200);
+
+        } else {
+        return response()->json(['message' => 'Deletion unsuccesfull'], 500);
+
+        }
+    } catch (\Exception $e){
+        return response()->json(['message' => 'An error occurred', 'error' => $e->getMessage()], 500);
+
+    }
     }
 
-    public function update($id)
-    {
+    // public function update($id,Request $request): JsonResponse
+    // {
+    //     try{
+    //         $request = $request->all();
 
-    }
+    //     $user_id = Auth::user()->id;
+
+    //     $post = Post::find($id)->where(['user_id' => $user_id])->get();
+
+    //     if(!$post){
+    //         return response()->json(["message"=>"This post doesn't exist"],404);
+    //     }
+
+    //     // $post->update($request);
+
+    //     return response()->json([$post],200);
+    // } catch (\Exception $e){
+    //     return response()->json(['message' => 'An error occurred', 'error' => $e->getMessage()], 500);
+
+    // }
+
+
+    // }
 }
