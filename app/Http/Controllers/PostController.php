@@ -96,8 +96,9 @@ class PostController extends Controller
 
         $user_id = Auth::user()->id;
 
-        $post = Post::find($id)->where(['user_id' => $user_id]);
+        $post = Post::where(['user_id' => $user_id])->find($id);
 
+        // return response()->json([$post]);
         if(!$post){
             return response()->json(["message"=>"This post doesn't exist"],404);
         }
@@ -118,27 +119,27 @@ class PostController extends Controller
     }
     }
 
-    // public function update($id,Request $request): JsonResponse
-    // {
-    //     try{
-    //         $request = $request->all();
+    public function update($id,Request $request): JsonResponse
+    {
+        try{
+            $request = $request->all();
 
-    //     $user_id = Auth::user()->id;
+        $user_id = Auth::user()->id;
 
-    //     $post = Post::find($id)->where(['user_id' => $user_id])->get();
+        $post = Post::where(['user_id' => $user_id])->find($id);
 
-    //     if(!$post){
-    //         return response()->json(["message"=>"This post doesn't exist"],404);
-    //     }
+        if(!$post){
+            return response()->json(["message"=>"This post doesn't exist"],404);
+        }
 
-    //     // $post->update($request);
+        $post->update($request);
 
-    //     return response()->json([$post],200);
-    // } catch (\Exception $e){
-    //     return response()->json(['message' => 'An error occurred', 'error' => $e->getMessage()], 500);
+        return response()->json([$post],200);
+    } catch (\Exception $e){
+        return response()->json(['message' => 'An error occurred', 'error' => $e->getMessage()], 500);
 
-    // }
+    }
 
 
-    // }
+    }
 }
