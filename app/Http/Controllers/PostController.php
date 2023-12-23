@@ -21,9 +21,7 @@ class PostController extends Controller
             $request['user_id'] = $id;
 
             $post = Post::create($request);
-            return response()->json([
-                $post
-            ]);
+            return response()->json($post);
         } catch (QueryException $e) {
             return response()->json(['message' => 'Failed to create the Post', 'error' => $e->getMessage()], 500);
         } catch (ValidationException $e) {
@@ -43,9 +41,7 @@ class PostController extends Controller
             if (count($posts) == 0) {
                 return response()->json(['message' => 'No Posts added'], 404);
             }
-            return response()->json([
-                $posts
-            ]);
+            return response()->json($posts);
 
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error occurred', 'error' => $e->getMessage()], 500);
@@ -61,7 +57,7 @@ class PostController extends Controller
                 return response()->json(['message' => 'Post not found'], 404);
             }
     
-            return response()->json([$post]);
+            return response()->json($post);
     
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error occurred', 'error' => $e->getMessage()], 500);
@@ -134,7 +130,7 @@ class PostController extends Controller
 
         $post->update($request);
 
-        return response()->json([$post],200);
+        return response()->json($post,200);
     } catch (\Exception $e){
         return response()->json(['message' => 'An error occurred', 'error' => $e->getMessage()], 500);
 
