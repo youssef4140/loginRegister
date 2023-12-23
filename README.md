@@ -70,3 +70,5 @@ php artisan serve
 to start the api server.
 
 you may now begin to test the routes.
+
+**Please refer to the documentation for details on the routes**
